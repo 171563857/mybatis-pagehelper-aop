@@ -4,6 +4,7 @@
 ###目前我使用的是springboot2,所以只提供java注解方式,后续有空会增加其它的
 
 ##首先在Application.java所在包下创建PageHelperAOP类用于aop切面拦截
+
 ##其次创建"PageInterceptor"类用于重写pagehelper的拦截类"PageInterceptor"
 
 #aop拦截类
@@ -45,8 +46,11 @@ public class PageHelperAOP {
 ```
 
 #PageInterceptor 拦截
+
 ###直接复制pagehelper工具的PageInterceptor类,然后修改里面的传参,由于在映射mybatis时有设置parameterType,会当传入多个参数时会导致报错异常
+
 ###所以要过滤到pageable对象,Object parameter = args[1];这就是参入的参数,会有 arg*和param*,arg*是原传入参数,param*是封装后要传入mybatis的对象
+
 ###添加私有方法filterPageable,用于过滤pageable对象
 
 ```
@@ -81,7 +85,9 @@ private Object filterPageable(MapperMethod.ParamMap paramMap) {
 ```
 
 #mybatis的dao类
+
 ##dao类要用springboot可以扫描到的注解,不然无法做aop和拦截
+
 ##aop要拦截的就是findxxx方法,然后获取Pageable并通过pageHelper.startPage设置分页
 ```
 import org.springframework.data.domain.Pageable;
@@ -92,4 +98,5 @@ public interface TestDao {
 ```
 
 #今天只做了这个,后续会不断扩展方法,让方法更加通用:)
+
 #如果解决你的问题,请点个赞吧:)
